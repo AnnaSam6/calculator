@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Калькулятор рецептов</title>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+        .recipe {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .recipe h1 {
+            text-align: center;
+            color: #333;
+            text-transform: capitalize;
+        }
+        .ingredient {
+            margin: 10px 0;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .ingredient:last-child {
+            border-bottom: none;
+        }
+        .ingredient-name {
+            font-weight: bold;
+            color: #555;
+        }
+        .ingredient-amount {
+            color: #e67e22;
+            font-weight: bold;
+        }
+        .no-recipe {
+            text-align: center;
+            color: #e74c3c;
+            padding: 20px;
+        }
+        .instructions {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="recipe">
+        {% if recipe %}
+            <h1>{{ request.path|cut:"/" }} (рецепт)</h1>
+            
+            <div class="ingredients-list">
+                {% for ingredient, amount in recipe.items %}
+                    <div class="ingredient">
+                        <span class="ingredient-name">{{ ingredient }}</span>
+                        <span class="ingredient-amount">{{ amount|floatformat:2 }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="instructions">
+                <p><strong>Инструкция:</strong> Добавьте параметр <code>?servings=число</code> к URL для расчета на указанное количество порций.</p>
+                <p><strong>Пример:</strong> /omlet/?servings=4</p>
+            </div>
+        {% else %}
+            <div class="no-recipe">
+                <h2>Рецепт не найден</h2>
+                <p>Доступные рецепты:</p>
+                <ul>
+                    <li>/omlet/ - рецепт омлета</li>
+                    <li>/pasta/ - рецепт пасты</li>
+                    <li>/buter/ - рецепт бутерброда</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
